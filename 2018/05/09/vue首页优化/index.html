@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>vue项目首页优化纪录 | shenmissing</title>
+    <meta name="description" content="This is a blog example built by VuePress">
+    
+    
+    <link rel="preload" href="/vuepress/assets/css/0.styles.e0fe1ad8.css" as="style"><link rel="preload" href="/vuepress/assets/js/app.dde810ca.js" as="script"><link rel="preload" href="/vuepress/assets/js/4.e5484eba.js" as="script"><link rel="preload" href="/vuepress/assets/js/5.f52c3f7c.js" as="script"><link rel="preload" href="/vuepress/assets/js/16.b4f04550.js" as="script"><link rel="prefetch" href="/vuepress/assets/js/1.44fcbee5.js"><link rel="prefetch" href="/vuepress/assets/js/10.c3fb5662.js"><link rel="prefetch" href="/vuepress/assets/js/11.07d62179.js"><link rel="prefetch" href="/vuepress/assets/js/12.f00c7ff2.js"><link rel="prefetch" href="/vuepress/assets/js/13.2c9ac5d5.js"><link rel="prefetch" href="/vuepress/assets/js/14.404e174c.js"><link rel="prefetch" href="/vuepress/assets/js/15.56eeacbc.js"><link rel="prefetch" href="/vuepress/assets/js/17.35bf19ab.js"><link rel="prefetch" href="/vuepress/assets/js/6.b348170a.js"><link rel="prefetch" href="/vuepress/assets/js/7.b71fde8a.js"><link rel="prefetch" href="/vuepress/assets/js/8.511797a6.js"><link rel="prefetch" href="/vuepress/assets/js/9.184eb840.js"><link rel="prefetch" href="/vuepress/assets/js/vuejs-paginate.9260caf3.js">
+    <link rel="stylesheet" href="/vuepress/assets/css/0.styles.e0fe1ad8.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuperess-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/vuepress/" class="nav-link home-link">shenmissing
+        </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/vuepress/" class="nav-link">Blog</a></li><li class="nav-item"><a href="/vuepress/tag/" class="nav-link">Tags</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/vuepress/" class="nav-link mobile-home-link">shenmissing
+      </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/vuepress/" class="nav-link">Blog</a></li><li class="mobile-nav-item"><a href="/vuepress/tag/" class="nav-link">Tags</a></li></ul></div></div></div> <div class="content-wrapper"><div id="vuperess-theme-blog__post-layout"><div class="vuepress-blog-theme-content"><div class="content__default"><h1 id="vue项目首页优化纪录-（待更新到-vue-cli3-webpack4）"><a href="#vue项目首页优化纪录-（待更新到-vue-cli3-webpack4）" class="header-anchor">#</a> vue项目首页优化纪录 <small style="font-size:14px;">（待更新到 vue/cli3 webpack4）</small></h1> <h2 id="_1、起因"><a href="#_1、起因" class="header-anchor">#</a> 1、起因</h2> <p>  项目打包的时候发现部分文件过大：vender.js有400K，app.css高达1.6M。看着这个数值，瞬间凌乱。</p> <h2 id="_2、优化vender-js"><a href="#_2、优化vender-js" class="header-anchor">#</a> 2、优化vender.js</h2> <p>  是因项目的依赖 vue、vue-router、vuex、axios 造成的，可使用cdn,注意更换对应版本号</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">&quot;//cdn.bootcss.com/vue/2.5.2/vue.min.js&quot;</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">&quot;//cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js&quot;</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">&quot;//cdn.bootcss.com/vuex/3.0.1/vuex.min.js&quot;</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">&gt;</span>
+</code></pre></div><p>  在 build/webpack.base.conf.js 中添加如下代码,使其不打包进文件</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token comment">//...</span>
+    externals<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">'vue'</span><span class="token punctuation">:</span> <span class="token string">'Vue'</span><span class="token punctuation">,</span>
+      <span class="token string">'vue-router'</span><span class="token punctuation">:</span> <span class="token string">'VueRouter'</span><span class="token punctuation">,</span>
+      <span class="token string">'vuex'</span><span class="token punctuation">:</span><span class="token string">'Vuex'</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment">//...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>  去掉相关引用代码</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// import Vue from 'vue'</span>
+<span class="token comment">// import Router from 'vue-router'</span>
+<span class="token comment">// import Vuex from 'vuex'</span>
+</code></pre></div><h2 id="_3、优化app-css"><a href="#_3、优化app-css" class="header-anchor">#</a> 3、优化app.css</h2> <p>  是因项目css中使用的图片全部转成了base64写入了css中，导致app.css体积过大，首屏加载过慢，在 build/webpack.base.conf.js 中设置图片下的url-loader的大小限制</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    rules<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token comment">//...</span>
+        <span class="token punctuation">{</span> 
+            <span class="token punctuation">{</span>
+                test<span class="token punctuation">:</span> <span class="token regex">/\.(png|jpe?g|gif|svg)(\?.*)?$/</span><span class="token punctuation">,</span>
+                loader<span class="token punctuation">:</span> <span class="token string">'url-loader'</span><span class="token punctuation">,</span>
+                options<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                    name<span class="token punctuation">:</span> utils<span class="token punctuation">.</span><span class="token function">assetsPath</span><span class="token punctuation">(</span><span class="token string">'img/[name].[ext]'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    limit<span class="token punctuation">:</span><span class="token number">5000</span>  <span class="token comment">//&lt;--添加此行，单位为 b，表示将图片大小 &lt;=5000b 的图片转成base64格式</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">//...</span>
+    <span class="token punctuation">]</span><span class="token punctuation">}</span>
+    
+<span class="token comment">// ---------------------打包后可能会出现css中的图片路径不对的情况，修改如下代码：</span>
+<span class="token comment">// build/utils.js 中找到 vue-style-loader</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>options<span class="token punctuation">.</span>extract<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ExtractTextPlugin<span class="token punctuation">.</span><span class="token function">extract</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        use<span class="token punctuation">:</span> loaders<span class="token punctuation">,</span>
+        fallback<span class="token punctuation">:</span> <span class="token string">'vue-style-loader'</span><span class="token punctuation">,</span>
+        publicPath<span class="token punctuation">:</span><span class="token string">'../../'</span> <span class="token comment">// &lt;--添加此行代码</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token string">'vue-style-loader'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>loaders<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_4、启用gzip压缩，一般浏览器都已支持-gz的资源文件，在http请求的request-headers-中能看到-accept-encoding-gzip"><a href="#_4、启用gzip压缩，一般浏览器都已支持-gz的资源文件，在http请求的request-headers-中能看到-accept-encoding-gzip" class="header-anchor">#</a> 4、启用Gzip压缩，一般浏览器都已支持.gz的资源文件，在http请求的Request Headers 中能看到 Accept-Encoding:gzip</h2> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">//config/index.js 中招到 productionGzip 设置为true</span>
+build<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">//...</span>
+    productionGzip：<span class="token boolean">true</span><span class="token punctuation">,</span>
+    productionGzipExtensions<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'js'</span><span class="token punctuation">,</span> <span class="token string">'css'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+<span class="token comment">//build/webpack.prod.conf.js 中添加以下代码</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>config<span class="token punctuation">.</span>build<span class="token punctuation">.</span>productionGzip<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> CompressionWebpackPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'compression-webpack-plugin'</span><span class="token punctuation">)</span>
+    webpackConfig<span class="token punctuation">.</span>plugins<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>
+        <span class="token keyword">new</span> <span class="token class-name">CompressionWebpackPlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        asset<span class="token punctuation">:</span> <span class="token string">'[path].gz[query]'</span><span class="token punctuation">,</span>
+        algorithm<span class="token punctuation">:</span> <span class="token string">'gzip'</span><span class="token punctuation">,</span>
+        test<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">RegExp</span><span class="token punctuation">(</span>
+            <span class="token string">'\\.('</span> <span class="token operator">+</span>
+            config<span class="token punctuation">.</span>build<span class="token punctuation">.</span>productionGzipExtensions<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'|'</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+            <span class="token string">')$'</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+        threshold<span class="token punctuation">:</span> <span class="token number">10240</span><span class="token punctuation">,</span>
+        <span class="token comment">// deleteOriginalAssets:true, //删除源文件，不建议</span>
+        minRatio<span class="token punctuation">:</span> <span class="token number">0.8</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <hr> <!----></div> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#_1、起因" title="1、起因">1、起因</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_2、优化vender-js" title="2、优化vender.js">2、优化vender.js</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_3、优化app-css" title="3、优化app.css">3、优化app.css</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_4、启用gzip压缩，一般浏览器都已支持-gz的资源文件，在http请求的request-headers-中能看到-accept-encoding-gzip" title="4、启用Gzip压缩，一般浏览器都已支持.gz的资源文件，在http请求的Request Headers 中能看到 Accept-Encoding:gzip">4、启用Gzip压缩，一般浏览器都已支持.gz的资源文件，在http请求的Request Headers 中能看到 Accept-Encoding:gzip</a></div></div></div></div> <footer class="footer" data-v-0d113134><div class="footer-left-wrap" data-v-0d113134><ul class="contact" data-v-0d113134><li class="contact-item" data-v-0d113134><a href="https://github.com/shenmissing" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-0d113134><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-0d113134><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-0d113134></path></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-0d113134><ul class="copyright" data-v-0d113134><li class="copyright-item" data-v-0d113134><a href="https://policies.google.com/privacy?hl=en-US" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-0d113134>Privacy Policy</a></li><li class="copyright-item" data-v-0d113134><a href="/vuepress/2018/05/09/vue%E9%A6%96%E9%A1%B5%E4%BC%98%E5%8C%96/.html" class="nav-link" data-v-0d113134>MIT Licensed | Copyright © 2018-present Vue.js</a></li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/vuepress/assets/js/app.dde810ca.js" defer></script><script src="/vuepress/assets/js/4.e5484eba.js" defer></script><script src="/vuepress/assets/js/5.f52c3f7c.js" defer></script><script src="/vuepress/assets/js/16.b4f04550.js" defer></script>
+  </body>
+</html>
